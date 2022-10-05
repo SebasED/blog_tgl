@@ -21,36 +21,36 @@ def register():
 @app.route('/user_registration', methods=['POST'])
 def registro():
 
-    if len(request.form['nombre_completo']) < 5:
-        return  jsonify(message='Escribe tu nombre completo')
+    if len(request.form['full_name']) < 5:
+        return  jsonify(message='Type your fullname')
 
     if not EMAIL_REGEX.match(request.form['email']):
-        return jsonify(message='Email invalido')
+        return jsonify(message='Invalid email')
 
 
     query = "SELECT * FROM users WHERE email = %(email)s"
     results = connectToMySQL('blog').query_db(query, request.form)
     if len(results) >= 1:
-        return jsonify(message='El email ya existe')
+        return jsonify(message='The email already exists')
 
-    if len(request.form['contraseña']) < 6:
-        return jsonify(message='La contraseña debe contener al menos 6 caracteres')
+    if len(request.form['password']) < 6:
+        return jsonify(message='The password must contain at least 6 characters')
 
-    if request.form['contraseña'] != request.form['confirma_contraseña']:
-        return jsonify(message='Las contraseñas no coinciden')
+    if request.form['password'] != request.form['confirm_password']:
+        return jsonify(message='Passwords do not match')
 
 
-    secret = bcrypt.generate_password_hash(request.form['contraseña'])
+    secret = bcrypt.generate_password_hash(request.form['password'])
 
     formulario = {
-        "full_name": request.form['nombre_completo'],
+        "full_name": request.form['full_name'],
         "email": request.form['email'],
         "password":secret
     }
 
     User.save(formulario)
 
-    return jsonify(message='validado')
+    return jsonify(message='validated')
 
 @app.route('/inicia_sesion')
 def inicia_sesion():
@@ -60,18 +60,18 @@ def inicia_sesion():
 def login():
 
     if len(request.form["email"]) < 1:
-        return jsonify(message="Email requerido")
+        return jsonify(message="Email required")
 
     user = User.get_by_email(request.form)
     if not user:
-        return jsonify(message='Email no registrado')
+        return jsonify(message='Email not registered')
 
     if len(request.form['password']) < 1:
-        return jsonify(message="Escribe tu contraseña")
+        return jsonify(message="Type your password")
 
     if not bcrypt.check_password_hash(user[0]["password"],request.form["password"]):
-        return jsonify(message="Contraseña incorrecta")
+        return jsonify(message="wrong password")
 
-    session['usuario_id'] = user[0]['id']
+    session['user_id'] = user[0]['id']
 
-    return jsonify(message='validado')
+    return jsonify(message='validated')

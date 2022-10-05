@@ -1,7 +1,7 @@
 from Flask_app.config.mysqlconnection import connectToMySQL
 from flask import jsonify
 
-class Poema:
+class Poem:
 
     def __init__(self,data):
         self.id = data['id'],

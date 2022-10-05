@@ -8,7 +8,7 @@ formLogin.onsubmit = function(event){
     fetch('/login', {method: 'POST', body: formulario})
         .then(Response => Response.json())
         .then(data=>{
-            if (data.message=="validado"){
+            if (data.message=="validated"){
                 window.location.href = "/"
             }
 

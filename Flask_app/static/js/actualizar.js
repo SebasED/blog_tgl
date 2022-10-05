@@ -9,9 +9,9 @@ formActualizar.onsubmit = function(event){
     fetch('/modificar_poema', {method: 'POST', body: formulario})
         .then(Response => Response.json())
         .then(data=>{
-            if (data.message=="validado"){
+            if (data.message=="validated"){
                 
-                window.location.href = "/bienvenido"
+                window.location.href = "/welcome"
             }
 
             var mensajeAlerta = document.getElementById('mensajeAlerta');

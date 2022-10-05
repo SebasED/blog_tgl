@@ -8,8 +8,8 @@ formPoema.onsubmit = function(event){
     fetch('/crear_poema', {method: 'POST', body: formulario})
         .then(Response => Response.json())
         .then(data=>{
-            if (data.message=="validado"){
-                window.location.href = "/bienvenido"
+            if (data.message=="validated"){
+                window.location.href = "/welcome"
             }
 
             var mensajeAlerta = document.getElementById('mensajeAlerta');

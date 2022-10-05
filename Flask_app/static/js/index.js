@@ -8,7 +8,7 @@ formRegistro.onsubmit = function(event){
     fetch('/user_registration', {method: 'POST', body: formulario})
         .then(Response => Response.json())
         .then(data=>{
-            if (data.message=="validado"){
+            if (data.message=="validated"){
                 window.location.href = "/"
             }
 
