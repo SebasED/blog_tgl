@@ -12,6 +12,14 @@ class User:
     
     @classmethod
     def save(cls,form):
+        """create and save a user into the database
+
+        Args:
+            form (dict): data for saving in database
+
+        Returns:
+            int: user id
+        """
         query = "INSERT INTO users(full_name, email, password) VALUES (%(full_name)s,%(email)s,%(password)s)"
         result = connectToMySQL('blog').query_db(query, form)
         print(result)
@@ -19,12 +27,28 @@ class User:
     
     @classmethod
     def get_by_email(cls, form):
+        """to get a user from the database using email
+
+        Args:
+            form (dict): user email
+
+        Returns:
+            dict: user data
+        """
         query = "SELECT * FROM users WHERE email = %(email)s"
         result = connectToMySQL('blog').query_db(query, form)
         return result
 
     @classmethod
     def get_name_by_id(cls, form):
+        """to get a user from the database using id
+
+        Args:
+            form (dict): user id
+
+        Returns:
+            dict: user data
+        """
         query = "SELECT full_name FROM users WHERE id = %(id)s"
         result = connectToMySQL('blog').query_db(query, form)
         return result[0]['full_name']

@@ -27,10 +27,10 @@ class Poem:
 
     @classmethod
     def get_poems(cls):
-        """_summary_
+        """to get the poems from the database
 
         Returns:
-            _type_: _description_
+            list: list of poems
         """
         query = "SELECT tittle_poem, users_id, id FROM poems "
         result = connectToMySQL('blog').query_db(query)
@@ -38,19 +38,42 @@ class Poem:
 
     @classmethod
     def get_poem(cls, form):
+        """to get a poem from the database
+
+        Args:
+            form (dict): poem id
+
+        Returns:
+            dict: poem data
+        """
         query = "SELECT tittle_poem, users_id, poem FROM poems WHERE id = %(id)s"
         result = connectToMySQL('blog').query_db(query, form)
         return result[0]
 
     @classmethod
     def update_poem(cls, form):
-        print()
+        """to update a poem in the database
+
+        Args:
+            form (dict): poem data
+
+        Returns:
+            int: poem id
+        """
         query = "UPDATE poems SET tittle_poem = %(tittle_poem)s, poem = %(poem)s  where id = %(id)s"
         result = connectToMySQL('blog').query_db(query, form)
         return result
 
     @classmethod
     def delete(cls, form):
+        """to delete a poem from the database
+
+        Args:
+            form (dict): poem id
+            
+        Returns:
+            int: poem id
+        """
         query = "DELETE FROM poems WHERE id = %(id)s"
         result = connectToMySQL('blog').query_db(query, form)
         return result
