@@ -5,11 +5,11 @@ formLogin.onsubmit = function(event){
 
     var formulario = new FormData(formLogin);
 
-    fetch('/login', {method: 'POST', body: formulario})
+    fetch('/session_start', {method: 'POST', body: formulario})
         .then(Response => Response.json())
         .then(data=>{
             if (data.message=="validated"){
-                window.location.href = "/"
+                window.location.href = "/welcome"
             }
 
             var mensajeAlerta = document.getElementById('mensajeLogin');

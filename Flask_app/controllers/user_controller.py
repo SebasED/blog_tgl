@@ -19,7 +19,7 @@ def register():
     return render_template('register.html')
 
 @app.route('/user_registration', methods=['POST'])
-def registro():
+def user_registration():
 
     if len(request.form['full_name']) < 5:
         return  jsonify(message='Type your fullname')
@@ -52,12 +52,12 @@ def registro():
 
     return jsonify(message='validated')
 
-@app.route('/inicia_sesion')
-def inicia_sesion():
+@app.route('/login')
+def login():
     return render_template('login.html')
 
-@app.route('/login', methods=['POST'])
-def login():
+@app.route('/session_start', methods=['POST'])
+def session_start():
 
     if len(request.form["email"]) < 1:
         return jsonify(message="Email required")
@@ -75,3 +75,8 @@ def login():
     session['user_id'] = user[0]['id']
 
     return jsonify(message='validated')
+
+@app.route('/log_out')
+def log_out():
+    session.clear()
+    return redirect('/')

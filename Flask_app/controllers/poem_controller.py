@@ -2,6 +2,7 @@ from flask import render_template, redirect,session, request, jsonify
 from Flask_app import app
 from Flask_app.models.poem_model import Poem
 from Flask_app.models.user_model import User
+from Flask_app.models.comment_model import Comment
 
 @app.route('/new_poem')
 def new_poem():
@@ -9,12 +10,12 @@ def new_poem():
 
 @app.route('/create_poem', methods=['POST'])
 def create_poem():
-    
-    
+    print("Entro a create_poem")
+
     if len(request.form['tittle_poem']) < 1:
         return jsonify(message='Agrega un titulo a tu poema')
 
-    if len(request.form['poem']) < 30:
+    if len(request.form['poem']) < 15:
         return jsonify(message='Escribe tu poema')
 
     form = {
@@ -25,7 +26,7 @@ def create_poem():
 
 
     Poem.save_poem(form)
-    return jsonify(message='Validated')
+    return jsonify(message='validated')
 
     # return render_template('bienvenido.html')
 
@@ -36,49 +37,46 @@ def welcome():
 
     if not session:
         return redirect('/')
-    
+
     datos = []
 
-    
     poems = Poem.get_poems()
     for poem in poems:
         form = {
-            'id':poem['user_id']
+            'id':poem['users_id']
         }
         dato = {
-            'tittle_poem':poem['tittle_poem'], 
-            'author': User.get_name_by_id(form),
+            'tittle_poem':poem['tittle_poem'],
+            'poem_author': User.get_name_by_id(form),
             'id_poem': poem['id'],
-            'id_creator_poem': poem['user_id']
+            'id_creator_poem': poem['users_id'],
         }
 
         datos.append(dato)
-    
-    author = User.get_name_by_id({'id':session['user_id']})
-    
 
-    return render_template('welcome.html',datos=datos, author= author )
+    user_session = User.get_name_by_id({'id':session['user_id']})
+    return render_template('welcome.html',datos=datos, user_session=user_session )
 
 @app.route('/show_poem/<int:id_poem>/<int:id_creator_poem>')
 def show_poem(id_poem, id_creator_poem):
     if not session:
         return redirect('/')
-    
-    form = {'id': id_poem}
-    
-    
-    poem = Poem.get_poem(form)
-    
+
+    poem = Poem.get_poem({'id': id_poem})
+
     creator = User.get_name_by_id({'id':id_creator_poem})
-    
-    
+
+    #Esta consulta debe devolverme el numbre del usuario que hizo el comentario y el comentario
+    comments = Comment.get_comments_by_id_poem({'id_poem': id_poem})
+
     datos = {
         'poem': poem['poem'],
         'tittle_poem': poem['tittle_poem'],
         'creator':creator,
-        'id_creator':id_creator_poem, 
+        'id_creator':id_creator_poem,
         'id_sesion': session['user_id'],
-        'id_poem': id_poem
+        'id_poem': id_poem,
+        'comments': comments
     }
 
     return render_template('poems.html', datos=datos)
@@ -91,21 +89,20 @@ def update_poem(id_poem):
         return redirect('/')
 
     form = {'id': id_poem}
-    
+
     poem = Poem.get_poem(form)
-    
+
     datos = {
         'poem': poem['poem'],
         'tittle_poem': poem['tittle_poem'],
         'poem_id': id_poem,
-        'creator_id': poem['user_id']
+        'creator_id': poem['users_id']
     }
 
     return render_template('update.html', datos = datos )
 
 @app.route('/modify_poem', methods= ['POST'])
 def modify_poem():
-    
 
     form = {
         'tittle_poem': request.form['tittle_poem'],
@@ -117,7 +114,7 @@ def modify_poem():
     id_creator = request.form['creator_id']
 
     Poem.update_poem(form)
-    
+
     return redirect(f'/show_poem/{id_poem}/{id_creator}')
 
 

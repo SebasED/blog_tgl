@@ -4,8 +4,6 @@ formActualizar.onsubmit = function(event){
     event.preventDefault();
 
     var formulario = new FormData(formActualizar);
-    print('---------------')
-    print(formulario)
     fetch('/modificar_poema', {method: 'POST', body: formulario})
         .then(Response => Response.json())
         .then(data=>{

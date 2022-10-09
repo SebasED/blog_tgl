@@ -36,9 +36,9 @@ ENGINE = InnoDB;
 -- Table `blog`.`poems`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `blog`.`poems` (
-  `id` INT UNSIGNED NOT NULL,
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `poem` TEXT NOT NULL,
-  `title_poem` TEXT NOT NULL,
+  `tittle_poem` TEXT NOT NULL,
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `users_id` INT NOT NULL,

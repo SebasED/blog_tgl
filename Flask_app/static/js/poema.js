@@ -5,7 +5,7 @@ formPoema.onsubmit = function(event){
 
     var formulario = new FormData(formPoema);
 
-    fetch('/crear_poema', {method: 'POST', body: formulario})
+    fetch('/create_poem', {method: 'POST', body: formulario})
         .then(Response => Response.json())
         .then(data=>{
             if (data.message=="validated"){

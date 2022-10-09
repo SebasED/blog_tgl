@@ -12,28 +12,28 @@
     <div class="contenedor">
         <div class="titulo" style="width: 700px; margin-left:180px;">
             <header class="d-flex justify-content-between aling-items-center">
-                <h1 >Bienvenid@ <br><span style="font-size: 25px;">{{autor}}</span></h1>
+                <h1 >Bienvenid@ <br><span style="font-size: 25px;">{{user_session}}</span></h1>
             </header>
         </div>
         <br>
         <!-- <div class="registro">
             <h4 style="margin-top: 10px; margin-left: -106px;">Elige un poema:</h4>
         </div> -->
-    
+
         <main >
             <div  class="scroll" style="overflow-y:scroll; height:300px; width:500px; margin-left: 162px; font-size:15px ;" >
                 {%for dato in datos%}
                     <div>
                         <a style="color:rgba(51, 47, 47, 0.999)" href="/show_poem/{{dato.id_poem}}/{{dato.id_creator_poem}}"><h3 >{{dato.tittle_poem}}</h3></a>
-                        
-                        publicado por: <span style="font: oblique bold 100% cursive;">{{dato.author}}</span></p>
+
+                        publicado por: <span style="font: oblique bold 100% cursive;">{{dato.poem_author}}</span></p>
                     </div><br><br>
                 {%endfor%}
             </div>
         </main>
             <div class="boton" style="margin-top: 60px;">
-                <a href="/new_poem" style="color: rgb(39, 6, 2);">Crear poema</a><br><br>
-                <a href="/cerrar_sesion" style="color: rgb(39, 6, 2)" >Cerrar Sesion</a>
+                <a href="/new_poem" style="color: rgb(39, 6, 2);">Create poem</a><br><br>
+                <a href="/log_out" style="color: rgb(39, 6, 2)" >Log out</a>
             </div>
     </div>
 </body>
