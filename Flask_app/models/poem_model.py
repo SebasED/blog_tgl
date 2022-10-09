@@ -13,12 +13,25 @@ class Poem:
 
     @classmethod
     def save_poem(cls,form):
+        """Create and save a poem into the database
+
+        Args:
+            form (dict): data for saving in database
+
+        Returns:
+            int: poem id
+        """
         query = "INSERT INTO poems(tittle_poem, poem, users_id) VALUES (%(tittle_poem)s,%(poem)s,%(user_id)s)"
         result = connectToMySQL('blog').query_db(query, form)
         return result
 
     @classmethod
     def get_poems(cls):
+        """_summary_
+
+        Returns:
+            _type_: _description_
+        """
         query = "SELECT tittle_poem, users_id, id FROM poems "
         result = connectToMySQL('blog').query_db(query)
         return result
