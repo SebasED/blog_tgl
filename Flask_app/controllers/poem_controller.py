@@ -67,8 +67,7 @@ def show_poem(id_poem, id_creator_poem):
     creator = User.get_name_by_id({'id':id_creator_poem})
 
     #Esta consulta debe devolverme el numbre del usuario que hizo el comentario y el comentario
-    comments = Comment.get_comments_by_id_poem({'id_poem': id_poem})
-
+    comments = Comment.comments_with_user_name_by_id_poem({'id_poem': id_poem})
     datos = {
         'poem': poem['poem'],
         'tittle_poem': poem['tittle_poem'],
@@ -120,9 +119,5 @@ def modify_poem():
 
 @app.route('/delete/<int:id_poem>')
 def delete(id_poem):
-    form = {
-            'id': id_poem
-        }
-    
-    Poem.delete(form)
+    Poem.delete({'id': id_poem})
     return redirect('/welcome')

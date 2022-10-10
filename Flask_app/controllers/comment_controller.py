@@ -20,3 +20,11 @@ def new_comment(id_poem, id_user_session):
 
     return redirect(f'/show_poem/{id_poem}/{id_creator}')
 
+@app.route('/delete_comment/<int:id_comment>')
+def delete_comment(id_comment):
+    print("Ingrese al metodo de eliminar comment")
+    poem = Comment.get_poem_by_comment_id({'id': id_comment})
+    id_poem = poem[0]['id']
+    id_creator = poem[0]['users_id']
+    Comment.delete({'id': id_comment})
+    return redirect(f'/show_poem/{id_poem}/{id_creator}')

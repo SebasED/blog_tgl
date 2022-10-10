@@ -23,8 +23,17 @@
                 <br>
                 {% for comment in datos.comments%}
                     <div>
-                        Comment by: <span style="font: oblique bold 100% cursive;">user: {{comment.users_id}}</span></p>
+                        Comment by: <span style="font: oblique bold 100% cursive;">{{comment.full_name}}</span></p>
                         <p class="parrafo">{{comment.comment}}</p>
+                        {% if datos.id_sesion == comment.users_id and datos.id_sesion == datos.id_creator%}
+                            <a href='/delete_comment/{{comment.id}}' style="color: rgb(39, 6, 2)"  >Delete</a>
+                            <!--<a href='' style="color: rgb(39, 6, 2)"  >Update</a> -->
+                        {% elif datos.id_sesion == comment.users_id%}
+                            <a href='/delete_comment/{{comment.id}}' style="color: rgb(39, 6, 2)"  >Delete</a>
+                            <!--<a href='' style="color: rgb(39, 6, 2)"  >Update</a>-->
+                        {% elif datos.id_sesion == datos.id_creator %}
+                            <a href='/delete_comment/{{comment.id}}' style="color: rgb(39, 6, 2)"  >Delete</a>
+                        {% endif %}
                     </div>
                     <hr>
                 {% endfor %}
@@ -43,8 +52,8 @@
         <div class="boton" style="margin-top: 60px; margin-top: -20px;">
             <a href='/welcome' style="color: rgb(39, 6, 2)">Regresar</a>
             {% if datos.id_creator == datos.id_sesion %}
-                <a href='/update/poem/{{datos.id_poem}}' style="color: rgb(39, 6, 2)"  >Actualizar</a>
-                <a href='/delete/{{datos.id_poem}}' style="color: rgb(39, 6, 2)"  >Eliminar</a>
+                <a href='/update/poem/{{datos.id_poem}}' style="color: rgb(39, 6, 2)"  >Updated</a>
+                <a href='/delete/{{datos.id_poem}}' style="color: rgb(39, 6, 2)"  >Delete</a>
             {%endif%}
             <br>
             <p>Publicado por: {{datos.creator}}</p>

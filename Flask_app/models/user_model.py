@@ -49,6 +49,6 @@ class User:
         Returns:
             dict: user data
         """
-        query = "SELECT full_name FROM users WHERE id = %(id)s"
+        query = "SELECT * FROM users WHERE id = %(id)s"
         result = connectToMySQL('blog').query_db(query, form)
-        return result[0]['full_name']
+        return result[0]["full_name"]
