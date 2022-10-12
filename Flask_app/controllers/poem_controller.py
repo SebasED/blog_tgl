@@ -1,4 +1,6 @@
-from flask import render_template, redirect,session, request, jsonify
+from email import message
+from typing import List
+from flask import render_template, redirect,session, request, jsonify, flash
 from Flask_app import app
 from Flask_app.models.poem_model import Poem
 from Flask_app.models.user_model import User
@@ -30,7 +32,21 @@ def create_poem():
 
     # return render_template('bienvenido.html')
 
+def organize_data_for_welcome(poems:List):
+    data = []
+    for poem in poems:
+        form = {
+            'id':poem['users_id']
+        }
+        datum = {
+            'tittle_poem':poem['tittle_poem'],
+            'poem_author': User.get_name_by_id(form),
+            'id_poem': poem['id'],
+            'id_creator_poem': poem['users_id'],
+        }
 
+        data.append(datum)
+    return data
 
 @app.route('/welcome')
 def welcome():
@@ -38,24 +54,11 @@ def welcome():
     if not session:
         return redirect('/')
 
-    datos = []
-
     poems = Poem.get_poems()
-    for poem in poems:
-        form = {
-            'id':poem['users_id']
-        }
-        dato = {
-            'tittle_poem':poem['tittle_poem'],
-            'poem_author': User.get_name_by_id(form),
-            'id_poem': poem['id'],
-            'id_creator_poem': poem['users_id'],
-        }
-
-        datos.append(dato)
+    data = organize_data_for_welcome(poems)
 
     user_session = User.get_name_by_id({'id':session['user_id']})
-    return render_template('welcome.html',datos=datos, user_session=user_session )
+    return render_template('welcome.html',datos=data, user_session=user_session )
 
 @app.route('/show_poem/<int:id_poem>/<int:id_creator_poem>')
 def show_poem(id_poem, id_creator_poem):
@@ -121,3 +124,66 @@ def modify_poem():
 def delete(id_poem):
     Poem.delete({'id': id_poem})
     return redirect('/welcome')
+
+
+# dato = {
+#             'tittle_poem':poem['tittle_poem'],
+#             'poem_author': User.get_name_by_id(form),
+#             'id_poem': poem['id'],
+#             'id_creator_poem': poem['users_id'],
+#         }
+
+@app.route('/get_poem_by_user', methods= ['POST'])
+def get_poem_by_user():
+    if not session:
+        return redirect('/')
+
+    # Get the value for doing the search
+    value_to_search = request.form['search']
+    return_poems = []
+
+    
+
+    # Validate if the search is for Author
+    if request.form['search_option'] == 'Author':
+        # Get the authors from the database
+        authors = [name['full_name'] for name in User.get_authors()]
+        authors_with_poems = []
+
+        # get the authors that match the entered value and save in a list
+        for author in authors:
+            if value_to_search in author.lower():
+                authors_with_poems.append(author)
+
+        if authors_with_poems:
+            for author in authors_with_poems:
+                return_poems = return_poems + Poem.get_poem_by_author({'author': author})
+            #return jsonify(message='validated')
+        else:
+            flash(f'There are not poems with the user {value_to_search}', 'alert')
+            #return jsonify(message=f'There are not poems with the user {value_to_search}')
+
+    # Validate if the search is for Poem
+    if request.form['search_option'] == 'Poem':
+        # Get the poems tittle from the database
+        poems_tittle = [poem['tittle_poem'] for poem in Poem.get_tittle_poems()]
+        poems = []
+
+        # get the poems that match the entered value and save in a list
+        for poem in poems_tittle:
+            if value_to_search in poem.lower():
+                poems.append(poem)
+
+        if poems:
+            for poem in poems:
+                return_poems = return_poems + Poem.get_poem_by_tittle({'tittle': poem})
+        else:
+            flash(f'There are not poems with the tittle: {value_to_search}', 'alert')
+    if request.form['search_option'] == '':
+        return redirect('/welcome')
+
+    data = organize_data_for_welcome(return_poems)
+    user_session = User.get_name_by_id({'id':session['user_id']})
+    return render_template('welcome.html',datos=data, user_session=user_session )
+
+

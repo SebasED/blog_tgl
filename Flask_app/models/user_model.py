@@ -52,3 +52,9 @@ class User:
         query = "SELECT * FROM users WHERE id = %(id)s"
         result = connectToMySQL('blog').query_db(query, form)
         return result[0]["full_name"]
+
+    @classmethod
+    def get_authors(cls):
+        query = "SELECT full_name FROM users"
+        result = connectToMySQL('blog').query_db(query)
+        return result

@@ -70,7 +70,6 @@ class Poem:
 
         Args:
             form (dict): poem id
-            
         Returns:
             int: poem id
         """
@@ -78,6 +77,23 @@ class Poem:
         result = connectToMySQL('blog').query_db(query, form)
         return result
 
+    @classmethod
+    def get_tittle_poems(cls):
+        query = "SELECT tittle_poem FROM poems"
+        result = connectToMySQL('blog').query_db(query)
+        return result
 
+    @classmethod
+    def get_poem_by_author(cls, form):
+        #SELECT * FROM blog.poems Where users_id = (select id from blog.users where full_name='Sebas Estrada');
+        query = "SELECT tittle_poem, users_id, id FROM poems WHERE users_id = (SELECT id FROM users WHERE fulL_name = %(author)s)"
+        result = connectToMySQL('blog').query_db(query, form)
+        return result
 
-
+    @classmethod
+    def get_poem_by_tittle(cls, form):
+        query = "SELECT tittle_poem, users_id, id FROM poems WHERE tittle_poem = %(tittle)s"
+        result = connectToMySQL('blog').query_db(query, form)
+        print("---------------------------")
+        print(result)
+        return result
