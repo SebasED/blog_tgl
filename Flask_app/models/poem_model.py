@@ -79,21 +79,39 @@ class Poem:
 
     @classmethod
     def get_tittle_poems(cls):
+        """to get a tittle poems
+
+        Returns:
+            list: list with tittle poems in dict format
+        """
         query = "SELECT tittle_poem FROM poems"
         result = connectToMySQL('blog').query_db(query)
         return result
 
     @classmethod
     def get_poem_by_author(cls, form):
-        #SELECT * FROM blog.poems Where users_id = (select id from blog.users where full_name='Sebas Estrada');
+        """to get poems by specific author
+
+        Args:
+            form (dict): id author
+
+        Returns:
+            list: list with poems in dict format
+        """
         query = "SELECT tittle_poem, users_id, id FROM poems WHERE users_id = (SELECT id FROM users WHERE fulL_name = %(author)s)"
         result = connectToMySQL('blog').query_db(query, form)
         return result
 
     @classmethod
     def get_poem_by_tittle(cls, form):
+        """to get poems by specific tittle
+
+        Args:
+            form (dict): tittle poem
+
+        Returns:
+            list: list with poems in dict format
+        """
         query = "SELECT tittle_poem, users_id, id FROM poems WHERE tittle_poem = %(tittle)s"
-        result = connectToMySQL('blog').query_db(query, form)
-        print("---------------------------")
-        print(result)
+        result = connectToMySQL('blog').query_db(query, form) 
         return result

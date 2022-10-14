@@ -55,6 +55,11 @@ class User:
 
     @classmethod
     def get_authors(cls):
+        """to get authors
+
+        Returns:
+            list: list with the author´s names in dict format
+        """
         query = "SELECT full_name FROM users"
         result = connectToMySQL('blog').query_db(query)
         return result

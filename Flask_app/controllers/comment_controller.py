@@ -6,6 +6,15 @@ from Flask_app.models.poem_model import Poem
 
 @app.route('/new_comment/<int:id_poem>/<int:id_user_session>', methods= ['POST'])
 def new_comment(id_poem, id_user_session):
+    """to create a new comment
+
+    Args:
+        id_poem (int): id from poem that will be commented
+        id_user_session (int): id from user that makes de comment
+
+    Returns:
+        redirect: show the poem where made the comment
+    """
     if not session:
         return redirect('/')
 
@@ -22,6 +31,14 @@ def new_comment(id_poem, id_user_session):
 
 @app.route('/delete_comment/<int:id_comment>')
 def delete_comment(id_comment):
+    """to delete a comment 
+
+    Args:
+        id_comment (int): id from comment that will be deleted
+
+    Returns:
+        redirect: redirect to show poems without deleted comment
+    """
     print("Ingrese al metodo de eliminar comment")
     poem = Comment.get_poem_by_comment_id({'id': id_comment})
     id_poem = poem[0]['id']

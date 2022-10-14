@@ -12,14 +12,23 @@ EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
 @app.route('/')
 def index():
+    """direct to the start page
+    """
     return render_template('start.html')
 
 @app.route('/register')
 def register():
+    """redirect to the register page
+    """
     return render_template('register.html')
 
 @app.route('/user_registration', methods=['POST'])
 def user_registration():
+    """function that makes the user registration
+
+    Returns:
+        jsonify: message to validate the succefull registration for the users 
+    """
 
     if len(request.form['full_name']) < 5:
         return  jsonify(message='Type your fullname')
@@ -54,10 +63,17 @@ def user_registration():
 
 @app.route('/login')
 def login():
+    """redirect to the loging page
+    """
     return render_template('login.html')
 
 @app.route('/session_start', methods=['POST'])
 def session_start():
+    """to loging user
+
+    Returns:
+        jsonify: a message to validate the succesfull loging for users
+    """
 
     if len(request.form["email"]) < 1:
         return jsonify(message="Email required")
@@ -78,5 +94,7 @@ def session_start():
 
 @app.route('/log_out')
 def log_out():
+    """to logout an user
+    """
     session.clear()
     return redirect('/')

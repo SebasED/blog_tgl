@@ -44,6 +44,14 @@ class Comment:
 
     @classmethod
     def get_poem_by_comment_id(cls, form):
+        """get a poem with an specific comment id
+
+        Args:
+            form (dict): comment id
+
+        Returns:
+            list: list with a poem in dict format
+        """
         query = "SELECT * FROM poems WHERE id = (select poems_id from comments where id = %(id)s)"
         result = connectToMySQL('blog').query_db(query, form)
         return result

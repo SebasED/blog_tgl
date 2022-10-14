@@ -8,12 +8,21 @@ from Flask_app.models.comment_model import Comment
 
 @app.route('/new_poem')
 def new_poem():
+    """Render a new poem page
+
+    Returns:
+        rendertemplate: render the template "new_poem.html" to show us a new page 
+    """
     return render_template('new_poem.html')
 
 @app.route('/create_poem', methods=['POST'])
 def create_poem():
-    print("Entro a create_poem")
+    """Create a new poem
 
+    Returns:
+        jsonify: it´s a message to validate if the poem was created
+    """
+    
     if len(request.form['tittle_poem']) < 1:
         return jsonify(message='Agrega un titulo a tu poema')
 
@@ -50,7 +59,12 @@ def organize_data_for_welcome(poems:List):
 
 @app.route('/welcome')
 def welcome():
+    """Show all the poems 
 
+    Returns:
+        rendertemplate: rendertemplate "welcome.html", poems and user session
+    """
+    
     if not session:
         return redirect('/')
 
@@ -62,6 +76,15 @@ def welcome():
 
 @app.route('/show_poem/<int:id_poem>/<int:id_creator_poem>')
 def show_poem(id_poem, id_creator_poem):
+    """show a specific poem by any user
+
+    Args:
+        id_poem (int): id poem to show
+        id_creator_poem (int): id from creator poem to show
+
+    Returns:
+        rendertemplate: render the template "poems.html" with poems data
+    """
     if not session:
         return redirect('/')
 
@@ -69,7 +92,7 @@ def show_poem(id_poem, id_creator_poem):
 
     creator = User.get_name_by_id({'id':id_creator_poem})
 
-    #Esta consulta debe devolverme el numbre del usuario que hizo el comentario y el comentario
+    #Esta consulta debe devolverme el nombre del usuario que hizo el comentario y el comentario
     comments = Comment.comments_with_user_name_by_id_poem({'id_poem': id_poem})
     datos = {
         'poem': poem['poem'],
@@ -87,6 +110,14 @@ def show_poem(id_poem, id_creator_poem):
 
 @app.route('/update/poem/<int:id_poem>')
 def update_poem(id_poem):
+    """it works to render the template to update the poem
+
+    Args:
+        int : id from poem to update
+
+    Returns:
+        rendertemplate: render the template "update.html" with the poem data
+    """
     if not session:
         return redirect('/')
 
@@ -105,6 +136,11 @@ def update_poem(id_poem):
 
 @app.route('/modify_poem', methods= ['POST'])
 def modify_poem():
+    """_summary_: Modify poem
+
+    Returns:
+        redirect: redirect to show poem
+    """
 
     form = {
         'tittle_poem': request.form['tittle_poem'],
@@ -122,19 +158,25 @@ def modify_poem():
 
 @app.route('/delete/<int:id_poem>')
 def delete(id_poem):
+    """to delete a poem
+
+    Args:
+        id_poem (int): id from poem to delete
+
+    Returns:
+        redirect: redirect to the welcome route
+    """
     Poem.delete({'id': id_poem})
     return redirect('/welcome')
 
 
-# dato = {
-#             'tittle_poem':poem['tittle_poem'],
-#             'poem_author': User.get_name_by_id(form),
-#             'id_poem': poem['id'],
-#             'id_creator_poem': poem['users_id'],
-#         }
-
 @app.route('/get_poem_by_user', methods= ['POST'])
 def get_poem_by_user():
+    """to get a poem by users or poems
+
+    Returns:
+        rendertemplate: render the template "welcome.html", poem´s data and user session
+    """
     if not session:
         return redirect('/')
 
