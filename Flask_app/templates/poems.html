@@ -50,13 +50,13 @@
             <!-- <button style="margin-left:162px;" class="btn btn-success; background-color:;">Me gusta:</button> -->
         </div>
         <div class="boton" style="margin-top: 60px; margin-top: -20px;">
-            <a href='/welcome' style="color: rgb(39, 6, 2)">Regresar</a>
+            <a href='/welcome' style="color: rgb(39, 6, 2)">Return</a>
             {% if datos.id_creator == datos.id_sesion %}
                 <a href='/update/poem/{{datos.id_poem}}' style="color: rgb(39, 6, 2)"  >Updated</a>
                 <a href='/delete/{{datos.id_poem}}' style="color: rgb(39, 6, 2)"  >Delete</a>
             {%endif%}
             <br>
-            <p>Publicado por: {{datos.creator}}</p>
+            <p>Published by: {{datos.creator}}</p>
         </div>
     </div>
 </body>
